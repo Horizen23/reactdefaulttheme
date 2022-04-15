@@ -1,32 +1,51 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components/macro';
-import { BrowserRouter,Route ,Routes, NavLink,Navigate } from "react-router-dom";
+import { BrowserRouter,Route ,Routes, NavLink,Navigate, Outlet, useLocation } from "react-router-dom";
 import Page1 from './Page1';
 import Page2 from './Page2';
 import Header from '../components/header';
+import { useDarkModeManager, useIsLogin } from '../features/user/hook';
+import Login from './Login';
 
 
+const MiddlewaresRouter = ({ auth,to }:any) => {
+  const user = useIsLogin();
+  if(auth !== user.islogin){
+     return   <Navigate to={to}  replace />
+  }
+  return ( <Outlet /> );
+}
+
+const Container = styled.div`
+    background-color:${({theme})=>theme.bg1};
+    ${({theme})=>theme.mediaWidth.upToMedium`
+           ${theme.flexRowNoWrap}
+           padding: 0 70px;
+    `};
+    ${({theme})=>theme.mediaWidth.upToExtraSmall`
+            ${theme.flexColumnNoWrap}
+    `};
+`;
 
 
 function App() {
   return (<>
       <Header/>
-      <Routes>
-
-              <Route path="Page1" element={<Page1 />} />
-              <Route path="Page2" element={<Page2 />} />
-              <Route index element={<Navigate replace to="Page1" />}  />
-              <Route path="*" element={<h1>not found 404</h1>} /> 
-              
-              {/* <Route   path="app/view/liquidity" element={<Liquidity />} /> */}
-              {/* <Route path="app/view/liquidity/">
-                  <Route path="import/:currencykeyA/:currencykeyB" element={<ImportLiquidity/>} />
-                  <Route path="import/:currencykeyA" element={<ImportLiquidity/>} />
-                  <Route path="add/:currencykeyA/:currencykeyB" element={<AddLiquidity/>} />
-                  <Route path="add/:currencykeyA" element={<AddLiquidity/>} />
-                  <Route path="remove/:currencykeyA/:currencykeyB" element={<RemoveLiquidity/>} />
-                </Route> */}
-      </Routes>
+      <div className="App">
+        <Container className="App-header">
+            <Routes>
+                <Route path="Page1" element={<Page1 />} />
+                <Route element={<MiddlewaresRouter  auth={false} to="/Page1"/>}> 
+                      <Route path="login" element={<Login />} />
+                </Route>
+                <Route element={<MiddlewaresRouter auth={true}  to="/login"/>}> 
+                    <Route path="Page2" element={<Page2 />} /> 
+                </Route>
+                <Route index element={<Navigate replace to="Page1" />}  />
+                <Route path="*" element={<h1>not found 404</h1>} /> 
+            </Routes>
+        </Container>
+      </div>
   </>
   );
 }
