@@ -2,6 +2,9 @@ import React, { useMemo } from "react";
 import styled, { css ,DefaultTheme, ThemeProvider as ThemeProviderd} from "styled-components/macro";
 import { Colors } from './styled'
 import { useIsDarkMode } from '../features/user/hook'
+import { Text, TextProps as TextPropsOriginal } from 'rebass'
+
+type TextProps = Omit<TextPropsOriginal, 'css'>
 
 const MEDIA_WIDTHS = {
     upToExtraSmall: 669,
@@ -14,7 +17,7 @@ const  colors = (isdarkmode : boolean):Colors => {
     return {
         isdarkmode,
         bg1: isdarkmode ?  '#303030':'#FFFFFF' ,
-        bg2: isdarkmode ?  '#565A69':'#C3C5CB' ,
+        bg2: isdarkmode ?  '#21316375':'#0535c742' ,
         tx1: isdarkmode ? '#FFFFFF': '#303030' ,
         tx2: isdarkmode ?  '#FFFFFF':'#565A69' ,
     }
@@ -44,9 +47,26 @@ const theme =  (isdarkmode : boolean):DefaultTheme => {
     }
 
 }
+const TextWrapper = styled(Text)<{ color: keyof Colors }>`
+  color: ${({ color, theme }) => (theme as any)[color]};
+`
+export const ThemedText = {
+    Main(props: TextProps) {
+      return <TextWrapper fontWeight={500} color={'tx1'} {...props} />
+    },
+    Link(props: TextProps) {
+      return <TextWrapper fontWeight={500} color={'tx1'} {...props} />
+    },
+    Label(props: TextProps) {
+      return <TextWrapper fontWeight={600} color={'tx2'} {...props} />
+    },
+   
+}
+  
 interface Props{
     children: React.ReactNode
 }
+
 export default function ThemeProvider ({children}:Props){
     const isdarkmode:boolean = useIsDarkMode(); 
     const themeObj = useMemo(()=>theme(isdarkmode),[isdarkmode])
