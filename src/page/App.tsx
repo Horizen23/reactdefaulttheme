@@ -6,6 +6,7 @@ import Page2 from './Page2';
 import Header from '../components/header';
 import { useDarkModeManager, useIsLogin } from '../features/user/hook';
 import Login from './Login';
+import Signup from './Signup';
 
 
 const MiddlewaresRouter = ({ auth,to }:any) => {
@@ -29,21 +30,26 @@ const Container = styled.div`
 
 
 function App() {
+  console.log('reender')
+
   return (<>
       <Header/>
       <div className="App">
         <Container className="App-header">
-            <Routes>
+            <div className="App">
+              <Routes>
                 <Route path="Page1" element={<Page1 />} />
                 <Route element={<MiddlewaresRouter  auth={false} to="/Page1"/>}> 
                       <Route path="login" element={<Login />} />
+                      <Route path="signup" element={<Signup />} />
                 </Route>
                 <Route element={<MiddlewaresRouter auth={true}  to="/login"/>}> 
                     <Route path="Page2" element={<Page2 />} /> 
                 </Route>
                 <Route index element={<Navigate replace to="Page1" />}  />
                 <Route path="*" element={<h1>not found 404</h1>} /> 
-            </Routes>
+              </Routes>
+            </div>
         </Container>
       </div>
   </>

@@ -20,16 +20,16 @@ export default function Header() {
   return (
     <WrapHead>
         <div>
-            <NavLink to="Page1">Page1</NavLink>
-            <NavLink to="Page2">Page2</NavLink>
-            {
-              !user.islogin&&<NavLink to="login">login</NavLink>
-            }
-            {/* {JSON.stringify(user)} */}
+            <NavLink to="Page1">pubic</NavLink>
+            <NavLink to="Page2">privte</NavLink>
+            
         </div>
         <div>
             {
-              user.islogin&& <button onClick={onLogout}>logout</button>
+              user.islogin?<button onClick={onLogout}>logout</button>:(<>
+              <NavLink to="login">login</NavLink>
+              <NavLink to="signup">signup</NavLink>
+              </>)
             }
           <button onClick={toggleDarkMode}>toogle darkmode</button>
         </div>

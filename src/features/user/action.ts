@@ -1,29 +1,17 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../services/Api";
 export const updateUserDarkMode = createAction<{ userDarkMode: boolean }>('user/updateUserDarkMode')
+export const refreshToken = createAction<string>("user/refreshToken")
 const axios = require('axios');
 export const Login  =  createAsyncThunk(
     'users/fetchByIdStatus',
-    async (user, {rejectWithValue,fulfillWithValue}) => {
-        var data = JSON.stringify({
-            "email": "com100pb@gmail.com",
-            "password": "EZ"
-          });
-          var config = {
-            method: 'POST',
-            url: 'http://localhost:5000/login',
-            headers: { 
-              'x-auth-token': '', 
-              'Content-Type': 'application/json'
-            },
-            data : data
-          };
+    async (user:{email:string,password:string}, {rejectWithValue,fulfillWithValue}) => {
           try {
-            const response = await axios(config as any);
+            const response = await api.login(user.email,user.password);
             return  fulfillWithValue(response.data)
           } catch (error) {
             return  rejectWithValue('')
           }
-
     }
 )
 export const Logout  =  createAsyncThunk(

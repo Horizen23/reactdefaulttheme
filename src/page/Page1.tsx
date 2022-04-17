@@ -22,9 +22,7 @@ const Container = styled.div`
 
 
 function Page1() {
-  
   return (
-    <div className="App">
       <Container className="App-header">
         <Suspense fallback={<Loader />}>
         
@@ -33,7 +31,6 @@ function Page1() {
           </ThemedText.Main>
         </Suspense>
       </Container>
-    </div>
   );
 }
 

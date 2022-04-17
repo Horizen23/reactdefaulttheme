@@ -18,15 +18,17 @@ const Login = () => {
             inputuser.current?.focus()
     },[])
     const loginfn = () =>{
-        console.log(inputuser.current?.value
-            ,inputpassword.current?.value)
+        onLogin({
+            email:inputuser.current?.value as string,
+            password: inputpassword.current?.value as string
+        })
     }
     console.log('rereander')
     return (
         <Culom>
             <input type="text" ref={inputuser} />
             <input type="password" ref={inputpassword} />
-            <button onClick={onLogin}>login</button>
+            <button onClick={loginfn}>login</button>
         </Culom>
     );
 };

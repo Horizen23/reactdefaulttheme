@@ -26,10 +26,10 @@ export function useDarkModeManager(): [boolean, () => void] {
 
     return [darkMode, toggleSetDarkMode]
 }
-export function useDeviseAuth(): [() => void,() => void]{
+export function useDeviseAuth(): [(user:{email:string,password:string}) => void,() => void]{
     const dispatch = useAppDispatch()
-    const login = useCallback(()=>{
-      dispatch(Login())
+    const login = useCallback((user:{email:string,password:string})=>{
+      dispatch(Login(user))
     },[dispatch])
     const logout = useCallback(()=>{
       dispatch(Logout())
