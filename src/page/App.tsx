@@ -33,18 +33,12 @@ const Container = styled.div`
 
 
 function App() {
-  console.log('reender')
-   const state =  useSelector(state=>state)
-   const dispatch = useDispatch()
 
   return (<>
       <Header/>
       <div className="App">
         <Container className="App-header">
             <div className="App">
-        <ThemedText.Label onClick={()=>dispatch({type:updateUserDarkMode})}>
-            {JSON.stringify(state)}
-        </ThemedText.Label>
               <Routes>
                 <Route path="Page1" element={<Page1 />} />
                 <Route element={<MiddlewaresRouter  auth={false} to="/Page1"/>}> 
