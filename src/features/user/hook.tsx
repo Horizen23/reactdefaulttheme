@@ -1,9 +1,10 @@
 
 import { useCallback } from 'react'
 import {useAppDispatch, useAppSelector } from '../../store/index'
-import { Login, Logout, updateUserDarkMode } from './action'
 import {AppState} from '../../store/index'
 import { UserState } from './reducer'
+import { Login, Logout, refreshToken, updateUserDarkMode } from "./action";
+
 export function useIsDarkMode(): boolean {
     const { userDarkMode } = useAppSelector(
       ({ user: { userDarkMode } }) => ({
@@ -21,18 +22,27 @@ export function useDarkModeManager(): [boolean, () => void] {
     const darkMode = useIsDarkMode()
 
     const toggleSetDarkMode = useCallback(() => {
-        dispatch(updateUserDarkMode({ userDarkMode: !darkMode }))
+        dispatch({type:updateUserDarkMode,payload:{ userDarkMode: !darkMode }})
     }, [darkMode, dispatch])
 
     return [darkMode, toggleSetDarkMode]
 }
-export function useDeviseAuth(): [(user:{email:string,password:string}) => void,() => void]{
+interface Iuser {
+  accessToken: string
+  email: string
+  id: string
+  refreshToken: string
+  roles: any[]
+  username:string
+}
+export function useDeviseAuth(): [(user:Iuser) => void,() => void]{
     const dispatch = useAppDispatch()
-    const login = useCallback((user:{email:string,password:string})=>{
-      dispatch(Login(user))
+    const login = useCallback((user:Iuser)=>{
+      dispatch({type:Login,payload:user})
+
     },[dispatch])
     const logout = useCallback(()=>{
-      dispatch(Logout())
+      dispatch({type:Logout})
     },[dispatch])
     return [login,logout]
 }

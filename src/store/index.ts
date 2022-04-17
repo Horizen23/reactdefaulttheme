@@ -1,11 +1,7 @@
-import { configureStore, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
-import { load, save } from 'redux-localstorage-simple'
-import { updateUserDarkMode } from "../features/user/action";
-
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import user from '../features/user/reducer'
-const PERSISTED_KEYS: string[] = ['user']
-
+import thunk from 'redux-thunk';
 // const listenerMiddleware = createListenerMiddleware()
 // listenerMiddleware.startListening({
 //     matcher: isAnyOf(updateUserDarkMode),
@@ -15,15 +11,10 @@ const PERSISTED_KEYS: string[] = ['user']
 // })
 
 
-const store = configureStore({
-    reducer:{
-        user
-    },
-    middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: true })
-    .concat(save({ states: PERSISTED_KEYS, debounce: 1000 })),
-    preloadedState: load({ states: PERSISTED_KEYS, disableWarnings: process.env.NODE_ENV === 'test' }),
-})
+const rootReducer = combineReducers({
+    user: user
+});
+const store = createStore(rootReducer, undefined, applyMiddleware(thunk));
 
 export default store
 

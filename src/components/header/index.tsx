@@ -17,6 +17,7 @@ export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   const [onLogin,onLogout] = useDeviseAuth();
   const user = useIsLogin();
+  console.log('rerender')
   return (
     <WrapHead>
         <div>

@@ -1,5 +1,5 @@
+import { refreshToken } from './../features/user/action';
 import axios,{AxiosInstance} from 'axios';
-import { Logout, refreshToken } from '../features/user/action';
 import store from '../store';
 class Api {
     url: string = "http://localhost:5000";
@@ -43,7 +43,7 @@ class Api {
                   try{
                     const rs = await this.api.post("/token");
                     const {accessToken} = rs.data
-                    dispatch(refreshToken(accessToken))
+                    dispatch({type:refreshToken,payload:accessToken})
                     return this.api(originalConfig)
                   }catch(e){
                     return Promise.reject(e);

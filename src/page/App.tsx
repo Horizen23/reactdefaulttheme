@@ -7,6 +7,9 @@ import Header from '../components/header';
 import { useDarkModeManager, useIsLogin } from '../features/user/hook';
 import Login from './Login';
 import Signup from './Signup';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThemedText } from '../theme';
+import { updateUserDarkMode } from '../features/user/action';
 
 
 const MiddlewaresRouter = ({ auth,to }:any) => {
@@ -31,12 +34,17 @@ const Container = styled.div`
 
 function App() {
   console.log('reender')
+   const state =  useSelector(state=>state)
+   const dispatch = useDispatch()
 
   return (<>
       <Header/>
       <div className="App">
         <Container className="App-header">
             <div className="App">
+        <ThemedText.Label onClick={()=>dispatch({type:updateUserDarkMode})}>
+            {JSON.stringify(state)}
+        </ThemedText.Label>
               <Routes>
                 <Route path="Page1" element={<Page1 />} />
                 <Route element={<MiddlewaresRouter  auth={false} to="/Page1"/>}> 
